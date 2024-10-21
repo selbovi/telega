@@ -1,0 +1,7 @@
+spring:
+  liquibase:
+    enabled: false #fixme
+  jpa:
+    hibernate:
+      ddl-auto: create #fixme
+

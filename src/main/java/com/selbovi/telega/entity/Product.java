@@ -1,15 +1,16 @@
 package com.selbovi.telega.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Название товара, за ценой которого планируем следить.
  */
 @Entity
-@Data
+@Getter
+@Setter
 public class Product {
 
     /**

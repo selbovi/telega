@@ -5,13 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Прямая ссылка на страницу товара.
  */
 @Entity
-@Data
+@Getter
+@Setter
 public class ProductPage {
 
     @Id

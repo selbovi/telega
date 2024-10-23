@@ -10,6 +10,8 @@ import com.selbovi.telega.repository.ProductRepository;
 import com.selbovi.telega.repository.ResultRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,12 +50,16 @@ public class Task {
         String html = null;
         try {
             var url = link.getUrl();
+
+            Document document = Jsoup.parse(url);
+
+            html = document.html();
+
             var parser = parsers
                     .stream()
                     .filter(htmlParser -> htmlParser.canProcess(url))
                     .findFirst()
                     .orElseThrow();//FIXME
-            html = "getHTML";
             var price = parser.extractPrice(html);
             linkVisitResult.setPrice(price);
         } catch (Exception e) {

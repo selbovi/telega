@@ -4,14 +4,13 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import com.selbovi.telega.entity.ProductPage;
 import com.selbovi.telega.entity.Result;
+import com.selbovi.telega.http.HtmlProvider;
 import com.selbovi.telega.parser.Parser;
 import com.selbovi.telega.repository.ProductPageRepository;
 import com.selbovi.telega.repository.ProductRepository;
 import com.selbovi.telega.repository.ResultRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +29,9 @@ public class Task {
 
     @Autowired
     private List<Parser> parsers;
+
+    @Autowired
+    private HtmlProvider htmlProvider;
 
     //TODO REPORT
     public void run() {
@@ -51,16 +53,16 @@ public class Task {
         try {
             var url = link.getUrl();
 
-            Document document = Jsoup.parse(url);
-
-            html = document.html();
+            html = htmlProvider.getHtml(url);
 
             var parser = parsers
                     .stream()
                     .filter(htmlParser -> htmlParser.canProcess(url))
                     .findFirst()
                     .orElseThrow();//FIXME
+
             var price = parser.extractPrice(html);
+
             linkVisitResult.setPrice(price);
         } catch (Exception e) {
             linkVisitResult.setErrorHtml(html); //fixme

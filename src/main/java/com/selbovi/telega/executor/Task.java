@@ -53,11 +53,11 @@ public class Task {
         try {
             var url = link.getUrl();
 
-            html = htmlProvider.getHtml(url);
+            final String htmlStr = html = htmlProvider.getHtml(url);
 
             var parser = parsers
                     .stream()
-                    .filter(htmlParser -> htmlParser.canProcess(url))
+                    .filter(htmlParser -> htmlParser.canProcess(url, htmlStr))
                     .findFirst()
                     .orElseThrow();//FIXME
 

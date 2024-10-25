@@ -15,6 +15,7 @@ import com.selbovi.telega.repository.ProductRepository;
 import com.selbovi.telega.repository.ResultRepository;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,8 +41,8 @@ public class TaskTest {
     private ResultRepository resultRepository;
 
     @Test
-    void getPrice_MegaMarker_ProductPage_Test() throws IOException {
-        String rawHtml = IOUtils.resourceToString("/market/megamarket/onyx-galileo.html", StandardCharsets.UTF_8);
+    void getPrice_MegaMarker_ProductPage_Single_Test() throws IOException {
+        String rawHtml = getHtml("onyx-galileo-single.html");
 
         String tidyHtml = Jsoup.parse(rawHtml).html();
         when(htmlProvider.getHtml(any())).thenReturn(tidyHtml);
@@ -52,5 +53,25 @@ public class TaskTest {
 
         Result result = task.visitLink(productPage);
         assertEquals(new BigDecimal(26490), result.getPrice());
+    }
+
+    @Test
+    @Disabled
+    void getPrice_MegaMarker_ProductPage_Aggregator_Test() throws IOException {
+        String rawHtml = getHtml("onyx-galileo-aggregator.html");
+
+        String tidyHtml = Jsoup.parse(rawHtml).html();
+        when(htmlProvider.getHtml(any())).thenReturn(tidyHtml);
+
+        ProductPage productPage = new ProductPage();
+        productPage.setUrl("https://megamarket.ru/catalog/?q=onyx%20boox%20galileo");
+
+        Result result = task.visitLink(productPage);
+        assertEquals(new BigDecimal(26490), result.getPrice());
+    }
+
+    private String getHtml(String fileName) throws IOException {
+        String folder = "/market/megamarket/";
+        return IOUtils.resourceToString(folder + fileName, StandardCharsets.UTF_8);
     }
 }

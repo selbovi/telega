@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class MegaMarketProductPageParser implements Parser {
     @Override
-    public boolean canProcess(String url) {
-        return url.contains("megamarket");
+    public boolean canProcess(String url, String html) {
+        return url.contains("megamarket") && url.contains("/details/");
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public interface Parser {
 
-    boolean canProcess(String url);
+    boolean canProcess(String url, String html);
 
     BigDecimal extractPrice(String html);
 
